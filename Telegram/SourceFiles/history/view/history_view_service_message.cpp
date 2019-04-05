@@ -161,11 +161,14 @@ void paintBubblePart(Painter &p, int x, int y, int width, int height, SideStyle 
 
 void paintPreparedDate(Painter &p, const QString &dateText, int dateTextWidth, int y, int w) {
 	int left = st::msgServiceMargin.left();
+	/*
 	int maxwidth = w;
 	if (Adaptive::ChatWide()) {
 		maxwidth = qMin(maxwidth, WideChatWidth());
 	}
 	w = maxwidth - st::msgServiceMargin.left() - st::msgServiceMargin.left();
+	*/
+	w = w - st::msgServiceMargin.left() - st::msgServiceMargin.left();
 
 	left += (w - dateTextWidth - st::msgServicePadding.left() - st::msgServicePadding.right()) / 2;
 	int height = st::msgServicePadding.top() + st::msgServiceFont->height + st::msgServicePadding.bottom();
@@ -187,9 +190,11 @@ bool NeedAboutGroup(not_null<History*> history) {
 
 } // namepsace
 
+/*
 int WideChatWidth() {
 	return st::msgMaxWidth + 2 * st::msgPhotoSkip + 2 * st::msgMargin.left();
 }
+*/
 
 void ServiceMessagePainter::paintDate(Painter &p, const QDateTime &date, int y, int w) {
 	auto dateText = langDayOfMonthFull(date.date());
@@ -314,7 +319,8 @@ not_null<HistoryService*> Service::message() const {
 QRect Service::countGeometry() const {
 	auto result = QRect(0, 0, width(), height());
 	if (Adaptive::ChatWide()) {
-		result.setWidth(qMin(result.width(), st::msgMaxWidth + 2 * st::msgPhotoSkip + 2 * st::msgMargin.left()));
+		//result.setWidth(qMin(result.width(), st::msgMaxWidth + 2 * st::msgPhotoSkip + 2 * st::msgMargin.left()));
+		result.setWidth(result.width() - st::msgServiceMargin.left() - st::msgServiceMargin.left());
 	}
 	return result.marginsRemoved(st::msgServiceMargin);
 }
@@ -336,9 +342,11 @@ QSize Service::performCountCurrentSize(int newWidth) {
 		item->_textHeight = 0;
 	} else {
 		auto contentWidth = newWidth;
+		/*
 		if (Adaptive::ChatWide()) {
 			accumulate_min(contentWidth, st::msgMaxWidth + 2 * st::msgPhotoSkip + 2 * st::msgMargin.left());
 		}
+		*/
 		contentWidth -= st::msgServiceMargin.left() + st::msgServiceMargin.left(); // two small margins
 		if (contentWidth < st::msgServicePadding.left() + st::msgServicePadding.right() + 1) {
 			contentWidth = st::msgServicePadding.left() + st::msgServicePadding.right() + 1;

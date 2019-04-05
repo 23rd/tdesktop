@@ -2734,6 +2734,7 @@ void MainWidget::handleAdaptiveLayoutUpdate() {
 	if (_player) {
 		_player->updateAdaptiveLayout();
 	}
+	resize(width()+1,height()); // ugly, but without real resizing long hystory msg not recalculating... 
 }
 
 void MainWidget::updateWindowAdaptiveLayout() {

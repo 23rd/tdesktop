@@ -1606,7 +1606,8 @@ QRect Message::countGeometry() const {
 	//	contentLeft += st::msgPhotoSkip - (hmaxwidth - hwidth);
 	}
 	accumulate_min(contentWidth, maxWidth());
-	accumulate_min(contentWidth, st::msgMaxWidth);
+	if (!Adaptive::ChatWide())
+		accumulate_min(contentWidth, st::msgMaxWidth);
 	if (mediaWidth < contentWidth) {
 		const auto textualWidth = plainMaxWidth();
 		if (mediaWidth < textualWidth
@@ -1648,7 +1649,8 @@ int Message::resizeContentGetHeight(int newWidth) {
 		contentWidth -= st::msgPhotoSkip;
 	}
 	accumulate_min(contentWidth, maxWidth());
-	accumulate_min(contentWidth, st::msgMaxWidth);
+	if (!Adaptive::ChatWide())
+		accumulate_min(contentWidth, st::msgMaxWidth);
 	if (mediaDisplayed) {
 		media->resizeGetHeight(contentWidth);
 		if (media->width() < contentWidth) {
